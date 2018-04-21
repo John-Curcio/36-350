@@ -23,7 +23,7 @@ model_select <- function(covariates, responses, cutoff){
 }
 
 # 2c
-run_simulation <- function(n_trials, n, p, cutoff){
+run_simulation <- function(n_trials, n, p, cutoff, datapath="p_vals.RData"){
   p_vals <- c()
   for(i in 1:n_trials){
     print(i)
@@ -33,5 +33,13 @@ run_simulation <- function(n_trials, n, p, cutoff){
                                 cutoff)
     p_vals <- c(p_vals, curr_p_vals)
   }
+  # Edit described in 2d
+  save(p_vals, file=datapath)
+  #hist(p_vals)
+}
+
+# 2d
+make_plot <- function(datapath="p_vals.RData"){
+  load(datapath)
   hist(p_vals)
 }
