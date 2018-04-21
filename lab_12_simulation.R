@@ -43,3 +43,21 @@ make_plot <- function(datapath="p_vals.RData"){
   load(datapath)
   hist(p_vals)
 }
+
+# Challenge
+data_split_select <- function(covariates, responses, cutoff){
+  p_val_colname <- "Pr(>|t|)"
+  n <- length(responses)
+  split_inds <- sample(1:n, size=round(n/2), replace = F)
+  mod <- lm(responses[split_inds] ~ covariates[split_inds,])
+  p_vals <- summary(mod)$coefficients[, p_val_colname]
+  sig_cov_inds <- which(p_vals <= cutoff)
+  if(length(sig_cov_inds) > 0){
+    sig_mod <- lm(responses[!split_inds] ~ covariates[!split_inds,sig_cov_inds])
+    sig_p_vals <- summary(sig_mod)$coefficients[, p_val_colname]
+    return(sig_p_vals)
+  } else{
+    return(c())
+  }
+}  
+  
