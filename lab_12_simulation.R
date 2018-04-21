@@ -23,12 +23,15 @@ model_select <- function(covariates, responses, cutoff){
 }
 
 # 2c
-# run_simulation <- function(n_trials, n, p, cutoff){
-#   datasets <- lapply(1:n_trials, 
-#                      function(i){
-#                        data <- generate_data(n, p)
-#                        
-#                        })
-#   
-# }
-
+run_simulation <- function(n_trials, n, p, cutoff){
+  p_vals <- c()
+  for(i in 1:n_trials){
+    print(i)
+    data <- generate_data(n, p);
+    curr_p_vals <- model_select(data$covariates,
+                                data$responses,
+                                cutoff)
+    p_vals <- c(p_vals, curr_p_vals)
+  }
+  hist(p_vals)
+}
