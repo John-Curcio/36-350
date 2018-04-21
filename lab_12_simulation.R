@@ -6,3 +6,13 @@ generate_data <- function(n, p){
   return(list(covariates=covariates,
               responses=responses))
 }
+
+# 2b
+model_select <- function(covariates, responses, cutoff){
+  mod <- lm(responses ~ covariates)
+  p_vals <- summary(mod)$coefficients[, "Pr(>|t|)"]
+  sig_inds <- which(p_vals <= cutoff)
+  if(length(sig_inds) > 0) return(lm(responses ~ covariates[,sig_inds]))
+  
+  return(lm(responses ~ 1))
+}
